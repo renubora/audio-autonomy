@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1" >
+<form>
+  <block>
+     <prompt>
+        Hello World. This is the beginnings of the groundhog project. A project to help those with dementia.
+    </prompt>
+  </block>
+</form>
+</vxml>

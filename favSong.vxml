@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1">
+<form>
+  <field name="choice">
+    <prompt bargein="true" bargeintype="hotword" timeout="6000s">
+      <audio bargein="true" bargeintype="hotword" src="sounds/beatlesBirthday.mp3"/>
+    </prompt>
+  
+    <grammar xml:lang="en-US" root ="MMENU">
+      <rule id="MMENU" scope="public">
+	<one-of>
+	  <item>stop</item>
+	  <item>repeat</item>
+	</one-of>
+      </rule>
+    </grammar>
+  </field>
+
+  <filled namelist="choice">
+    <if cond="choice == 'stop'">
+      <goto next="t.php"/>
+    <elseif cond="choice == 'repeat'"/>
+      <goto next="t.php?a=favSong&amp;c=repeat"/>
+    </if>
+  </filled>
+
+    <block>
+      <goto next="t.php"/>
+    </block>
+  </form>
+</vxml>

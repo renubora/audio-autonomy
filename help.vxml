@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1">
+  <form>
+    <field name="choice">
+      <prompt bargein="true" timeout="10s">
+	Do you require assistance?
+      </prompt>
+      
+      <grammar xml:lang="en-US" root="help">
+	<rule id="help" scope="public">
+	  <one-of>
+	    <item>no</item>
+	    <item>yes</item>
+	    <item>help</item>
+	  </one-of>
+	</rule>
+      </grammar>
+
+      <noinput>
+	<goto next="t.php?a=help&amp;c=dial"/>
+      </noinput>
+
+      <nomatch>
+	<goto next="t.php?a=help&amp;c=dial"/>
+      </nomatch>
+    </field>  
+
+  <filled namelist="choice">
+    <if cond="choice == 'no'">
+      <goto next="t.php?a=help&amp;c=no"/>
+    <elseif cond="choice == 'yes'"/>
+      <goto next="t.php?a=help&amp;c=dial"/>
+    <elseif cond="choice == 'help'"/>
+      <goto next="t.php?a=help&amp;c=dial"/>
+    </if>
+  </filled>
+  </form>
+</vxml>
+
+
+

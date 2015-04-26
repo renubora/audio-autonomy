@@ -1,0 +1,10 @@
+*~
+*.swp
+failedExperiments/
+infoviz/
+msg/
+*-renu*
+*.log
+fc/demos/
+fc/changelog.txt
+

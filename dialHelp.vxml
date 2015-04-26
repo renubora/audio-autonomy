@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1">
+<form id="dialHelp">
+  <block>
+    <prompt>Dialling assistance</prompt>
+  </block>
+  <transfer name="myCall" transferaudio="sounds/holdRogersAdv8bMonoS8k.ogg"
+	    dest="%%help_number%%" bridge="true" connecttimeout="120s">
+
+    <filled>
+      <if cond="myCall == 'busy'">
+	<prompt>
+	  The line is busy. Retrying.
+	</prompt>
+	<goto next="t.php?a=help&amp;c=dial"/>
+
+      <elseif cond="myCall == 'far_end_disconnect'"/>
+	<prompt>
+	  Call Completed.
+	</prompt>
+	<goto next="t.php"/>
+
+      <elseif cond="myCall == 'noanswer'"/>
+	<prompt>
+	  No answer. Retrying.
+	</prompt>
+	<goto next="t.php?a=help&amp;c=dial"/>
+
+      <elseif cond="myCall == 'unknown'"/>
+	<prompt>
+	  Unknown failure. Retrying.
+	</prompt>
+	<goto next="t.php?a=help&amp;c=dial"/>
+
+      <else/>
+	<prompt>
+	  Call completed.
+	</prompt>
+	<goto next="t.php"/>
+      </if>
+    </filled>
+  </transfer>
+
+</form>
+</vxml>

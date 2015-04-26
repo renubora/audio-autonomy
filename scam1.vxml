@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1" xmlns="http://www.w3.org/2001/vxml">
+<form id="scam">
+  <field name="choice">
+    <prompt bargein="true" bargeintype="hotword" timeout="120s">
+      This is Jim from Burial Life Insurance and I’m calling you back from the Senior Care Program. 
+      You spoke with one of my Call Center representatives recently regarding some information on 
+      your California State Regulated Burial Life Insurance Plans you may qualify for?
+      We are pleased to report that you do qualify. All we need is for you to confirm the last
+      four digits of your social security number and we can complete your coverage.
+    </prompt>
+
+    <grammar type="text/gsl">
+      <![CDATA[
+	       DERP
+	       [
+	       ( ?what ?is ?the password ) { <choice password> }
+	       [ +zero +one +two +three +four +five +six +seven +eight +nine ] { <choice number> }
+	       ]
+      ]]>
+    </grammar>
+  </field>
+
+  <filled>
+    <if cond="choice == 'password'">
+      <prompt>
+        Congratulations! You have passed the fraud test!
+      </prompt>
+      <goto next="t.php"/>
+    <elseif cond="choice == 'number'"/>
+      <prompt>
+	You are a victim of fraud.
+        <audio bargein="false" src="sounds/annoyTone.wav"/>
+      </prompt>
+      <goto next="t.php"/>
+    </if>
+  </filled>
+
+</form>
+</vxml>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1" xmlns="http://www.w3.org/2001/vxml">
+<form id="MainMenu">
+  <field name="choice">
+  
+    <prompt bargein="true" bargeintype="hotword" timeout="%%time_slice%%s">
+      . Home menu .
+    </prompt>
+    
+    <grammar xml:lang="en-US" root ="MMENU">
+      <rule id="MMENU" scope="public">
+	<one-of>
+	  <item>help help</item>
+	  <item>favorite song</item>
+	  <item>fraud test</item>
+	  %%passive_question_ASR%%
+	</one-of>
+      </rule>
+    </grammar>
+
+    <noinput>
+      <goto next="t.php"/>
+    </noinput>
+    
+    <nomatch>
+      <goto next="t.php"/>
+    </nomatch>
+  </field>
+
+  <filled namelist="choice">
+    <if cond="choice == 'help help'">
+      <goto next="t.php?a=home&amp;c=help"/>
+    <elseif cond="choice == 'favorite song'"/>
+      <goto next="t.php?a=home&amp;c=favSong"/>
+    <elseif cond="choice == 'fraud test'"/>
+      <goto next="t.php?a=home&amp;c=scam"/>
+    %%passive_question_if%%
+    </if>
+  </filled>
+
+</form>
+</vxml>

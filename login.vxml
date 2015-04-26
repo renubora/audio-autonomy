@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1" xmlns="http://www.w3.org/2001/vxml">
+<form id="MainMenu">
+  <field name="login">
+  
+    <prompt bargein="false" timeout="60s">
+     Please say your password
+    </prompt>
+    
+    <grammar xml:lang="en-US" root ="MMENU">
+      <rule id="MMENU" scope="public">
+        <one-of>
+          <item>%%pin%%</item>
+        </one-of>
+      </rule>
+    </grammar>
+
+    <noinput>
+      <reprompt/>
+    </noinput>
+
+    <nomatch count="1">
+      Please try again.
+    </nomatch>
+
+    <nomatch count="2">
+      <exit/>
+    </nomatch>
+  </field>
+
+  <filled namelist="login">
+    <if cond="login == '%%pin%%'">
+      <goto next="t.php"/>
+    <else/>
+      <prompt>
+	Goodbye!
+      </prompt>
+    </if>
+  </filled>
+ </form>
+</vxml>

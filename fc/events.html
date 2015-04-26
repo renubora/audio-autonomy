@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<link href='fc/fullcalendar.css' rel='stylesheet' />
+<link href='fc/fullcalendar.print.css' rel='stylesheet' media='print' />
+<script src='fc/lib/moment.min.js'></script>
+<script src='fc/lib/jquery.min.js'></script>
+<script src='fc/lib/jquery-ui.custom.min.js'></script>
+<script src='fc/fullcalendar.min.js'></script>
+<script>
+
+	$(document).ready(function() {
+		/* initialize the external events
+		-----------------------------------------------------------------*/
+
+		$('#external-events .fc-event').each(function() {
+
+			// store data so the calendar knows to render an event upon drop
+			$(this).data('event', {
+				title: $.trim($(this).text()), // use the element's text as the event title
+				stick: true // maintain when user navigates (see docs on the renderEvent method)
+			});
+
+			// make the event draggable using jQuery UI
+			$(this).draggable({
+				zIndex: 999,
+				revert: true,      // will cause the event to go back to its
+				revertDuration: 0  //  original position after the drag
+			});
+		});
+
+		/* initialize the calendar
+		-----------------------------------------------------------------*/
+		$('#calendar').fullCalendar({
+			header:{
+				left: 'prev,next today',
+				center: 'title',
+				right: 'agendaDay,agendaWeek'
+			},
+	                events: 'fc/events.php',
+			editable: true,
+                       	defaultTimedEventDuration: '00:30:00',
+	                allDayDefault: false,
+	                eventDurationEditable: false,
+                        forceEventDuration: true,
+                	defaultView: 'agendaWeek',
+                	allDaySlot: false,
+			droppable: true, // this allows things to be dropped onto the calendar
+
+	                         
+
+	                // Andrew Delete event code
+                    eventClick: function(calEvent, jsEvent, view){
+                            $('#calendar').fullCalendar('removeEvents', function (event){
+                                return event == calEvent;
+                            });
+                            $.ajax({
+    	                        url: 'fc/submit.php',
+                                data: 'act=del&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&id=' + calEvent.id,
+                                type: 'POST'
+                            });
+
+                 	},
+
+	                // Called when adding a new event from the left hand menu
+	                eventReceive: function(calEvent){
+                            $.ajax({
+    	                        url: 'fc/submit.php',
+                                data: 'act=new&title=' + calEvent.title + '&start=' + calEvent.start.format(),
+                                type: 'POST',
+
+  	                        success: function(response){
+	                            calEvent.id = response
+	                            $('#calendar').fullCalendar('updateEvent', calEvent);
+	                        },
+	                        error: function(e){ console.log(e.responseText); }
+
+    	                    });
+                            $('#calendar').fullCalendar('updateEvent', calEvent);
+                        },
+
+                    // Called when an already existing event is dropped after drag
+                    eventDrop: function(calEvent, jsEvent, view){
+                            $.ajax({
+	                        url: 'fc/submit.php',
+                                data: 'act=mod&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&id=' + calEvent.id,
+                                type: 'POST'
+                            });
+                	}
+		});
+	});
+
+</script>
+<style>
+	body {
+		margin-top: 40px;
+		text-align: center;
+		font-size: 14px;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+	}
+		
+	#wrap {
+		width: 1100px;
+		margin: 0 auto;
+	}
+		
+	#external-events {
+		float: left;
+		width: 150px;
+		padding: 0 10px;
+		border: 1px solid #ccc;
+		background: #eee;
+		text-align: left;
+	}
+		
+	#external-events h4 {
+		font-size: 16px;
+		margin-top: 0;
+		padding-top: 1em;
+	}
+		
+	#external-events .fc-event {
+		margin: 10px 0;
+		cursor: pointer;
+	}
+		
+	#external-events p {
+		margin: 1.5em 0;
+		font-size: 11px;
+		color: #666;
+	}
+		
+	#external-events p input {
+		margin: 0;
+		vertical-align: middle;
+	}
+
+	#calendar {
+		float: right;
+		width: 900px;
+	}
+
+</style>
+</head>
+<body>
+	<div id='wrap'>
+		<div id='external-events'>
+			<h4>Draggable Events</h4>
+			<div class='fc-event'>Fraud Prevention</div>
+			<div class='fc-event'>Oven Reminder</div>
+			<div class='fc-event'>Pet Feeding Reminder</div>
+			<div class='fc-event'>Medication Reminder</div>
+			<div class='fc-event'>Grooming Reminder</div>
+			<div class='fc-event'>Prayer Reminder</div>
+			<div class='fc-event'>Play Favorite Song</div>
+			<div class='fc-event'>Play Song Playlist</div>
+			<p>
+				<input type='checkbox' id='recur-daily' />
+				<label for='recur-daily'>Recur Daily</label>
+			</p><p>
+				<input type='checkbox' id='recur-weekly' />
+				<label for='recur-weekly'>Recur Weekly</label>
+			</p>
+		</div>
+		<div id='calendar'></div>
+		<div style='clear:both'></div>
+	</div>
+</body>
+</html>

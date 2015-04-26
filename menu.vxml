@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1" xmlns="http://www.w3.org/2001/vxml">
+<form id="MainMenu">
+  <field name="choice">
+  
+    <prompt bargein="false" timeout="120s">
+      Welcome to project ground hog. Please select from the following menu.
+      record something,
+      play back recording,
+      help,
+      favorite song,
+      repeat this menu,
+    </prompt>
+    
+     <prompt count="2" timeout="120s">
+     </prompt>
+
+    <grammar xml:lang="en-US" root ="MMENU">
+      <rule id="MMENU" scope="public">
+	<one-of>
+	  <item>record something</item>
+	  <item>play back recording</item>
+	  <item>help help help</item>
+	  <item>favorite song</item>
+	  <item>repeat this menu</item>
+	</one-of>
+      </rule>
+    </grammar>
+
+    <noinput>
+      I did not hear anything. Please try again.
+    </noinput>
+    
+    <nomatch>
+      <reprompt/>
+    </nomatch>
+  </field>  
+
+  <filled namelist="choice">
+    <if cond="choice == 'record something'">
+      <goto next="record.vxml"/>
+    <elseif cond="choice == 'play back recording'"/>
+      <goto next="playback.vxml"/>
+    <elseif cond="choice == 'help help help'"/>
+      <goto next="help.vxml"/>
+    <elseif cond="choice == 'favorite song'"/>
+      <goto next="favSong.vxml"/>
+    <elseif cond="choice == 'repeat this menu'"/>
+      <prompt>
+	<reprompt/>
+      </prompt>
+    <else/>
+      <prompt>
+	You got it wrong!
+      </prompt>
+    </if>
+  </filled>
+
+</form>
+</vxml>
