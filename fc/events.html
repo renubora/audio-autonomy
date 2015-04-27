@@ -7,7 +7,16 @@
 <script src='fc/lib/moment.min.js'></script>
 <script src='fc/lib/jquery.min.js'></script>
 <script src='fc/lib/jquery-ui.custom.min.js'></script>
+
+<!-- should move this library to nicer home -->
+<script src='fc/lib/trying-dialogue/jquery-ui-1.11.4.custom/jquery-ui.js'></script>
+<link href='fc/lib/trying-dialogue/jquery-ui-1.11.4.custom/jquery-ui.css' rel='stylesheet' />
+<link href='fc/lib/trying-dialogue/jquery-ui-1.11.4.custom/jquery-ui.structure.css' rel='stylesheet' />
+<link href='fc/lib/trying-dialogue/jquery-ui-1.11.4.custom/jquery-ui.theme.css' rel='stylesheet' />
+
 <script src='fc/fullcalendar.min.js'></script>
+
+
 <script>
 
 	$(document).ready(function() {
@@ -30,8 +39,34 @@
 			});
 		});
 
+		$('#external-events .fc-event-question').each(function() {
+
+			// store data so the calendar knows to render an event upon drop
+			$(this).data('event', {
+				title: $.trim($(this).text()), // use the element's text as the event title
+				stick: true, // maintain when user navigates (see docs on the renderEvent method)
+				allDay: true,
+				question: 'What time is lunch?',
+				response: '5pm',
+			});
+
+			// make the event draggable using jQuery UI
+			$(this).draggable({
+				zIndex: 999,
+				revert: true,      // will cause the event to go back to its
+				revertDuration: 0  //  original position after the drag
+			});
+		});
+
 		/* initialize the calendar
 		-----------------------------------------------------------------*/
+
+		// eventDrop: should only write to database and move event if draggedEvent is allowed in the slot type
+		// initialize this so it's never empty- it is needed to track an event's starting point
+		var draggedEventStartedAsAllDay = false;
+		// end of eventDrop experiment
+
+
 		$('#calendar').fullCalendar({
 			header:{
 				left: 'prev,next today',
@@ -45,26 +80,44 @@
 	                eventDurationEditable: false,
                         forceEventDuration: true,
                 	defaultView: 'agendaWeek',
-                	allDaySlot: false,
+                	allDaySlot: true,
 			droppable: true, // this allows things to be dropped onto the calendar
 
-	                         
 
-	                // Andrew Delete event code
-                    eventClick: function(calEvent, jsEvent, view){
-                            $('#calendar').fullCalendar('removeEvents', function (event){
-                                return event == calEvent;
-                            });
-                            $.ajax({
-    	                        url: 'fc/submit.php',
-                                data: 'act=del&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&id=' + calEvent.id,
-                                type: 'POST'
-                            });
+			/* Try to delay the modal window
+			
+        	setTimeout(function() {
+      			console.log("sorry");// Do something after 5 seconds
+				}, 5000);*/
 
-                 	},
+			// Called when an event is clicked
+			eventClick: function(calEvent, jsEvent, view) {
 
-	                // Called when adding a new event from the left hand menu
-	                eventReceive: function(calEvent){
+			        alert('Event: ' + calEvent.title);
+			        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+			        alert('View: ' + view.name);
+
+			        // change the border color just for fun
+			        $(this).css('border-color', 'red');	  
+			},
+
+            // Andrew Delete event code
+            // Called when an event is clicked
+        	/*eventClick: function(calEvent, jsEvent, view){
+                $('#calendar').fullCalendar('removeEvents', function (event){
+                    return event == calEvent;
+                });
+                $.ajax({
+                    url: 'fc/submit.php',
+                    data: 'act=del&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&id=' + calEvent.id,
+                    type: 'POST'
+                });
+
+         	},*/
+
+         	// 
+         	// standard code (no Question Response form)
+         	eventReceive: function(calEvent){
                             $.ajax({
     	                        url: 'fc/submit.php',
                                 data: 'act=new&title=' + calEvent.title + '&start=' + calEvent.start.format(),
@@ -80,14 +133,160 @@
                             $('#calendar').fullCalendar('updateEvent', calEvent);
                         },
 
-                    // Called when an already existing event is dropped after drag
-                    eventDrop: function(calEvent, jsEvent, view){
-                            $.ajax({
-	                        url: 'fc/submit.php',
-                                data: 'act=mod&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&id=' + calEvent.id,
-                                type: 'POST'
-                            });
-                	}
+
+
+            // Called when adding a new event from the left hand menu (Question and Response collected)
+            eventReceive: function(calEvent){
+
+            		/*alert('Event: ' + calEvent.title);
+            		$(this).
+
+			        // change the border color just for fun
+			        $(this).css('border-color', 'red');*/
+
+					/*$('#mydialog').dialog({ 
+					        autoOpen: false, 
+					        modal: true, 
+					        draggable: true, 
+					        width: 470, 
+					        height: 'auto', 
+					        // resizable: false, 
+					        // draggable: false, 
+					        // bgiframe: true 
+					    }); 
+					*/
+
+					// beginning of if then (allDay events need to have input dialogue)
+					if (calEvent.allDay == false) {
+
+					$.ajax({
+    	                        url: 'fc/submit.php',
+                                data: 'act=new&title=' + calEvent.title + '&start=' + calEvent.start.format(),
+                                type: 'POST',
+
+  	                        success: function(response){
+	                            calEvent.id = response
+	                            $('#calendar').fullCalendar('updateEvent', calEvent);
+	                        },
+	                        error: function(e){ console.log(e.responseText); }
+
+    	                    });
+					}
+
+					else {
+
+					$( "#dialogContent" ).dialog({
+					    autoOpen: false,
+					    modal: true,
+					    buttons: {
+					        OK: function() {
+					            //This is where you do the AJAX call to send the data
+					            //to the server. You then handle the response, and update
+					            //the relevant part of the page (based on 'record') before closing the dialog.
+					            //Something like this:
+					            
+					            //$.ajax({
+					            //    type: 'POST',
+					            //    url: 'yourURL.php',
+					            //    data: $('#editForm').serialize(),
+					            //    success: function(data) {
+					                //this is where you do your callback and                    
+					                //deal with the servers response which is passed back in the 'data' variable.
+					            //    },
+					            //    dataType: 'json'
+					            //});
+
+								//console.log('input: ' + $('#myInput').val());
+								//console.log('calEvent.question: ' + calEvent.question);
+
+					            calEvent.question = $('#question').val();
+					            calEvent.response = $('#answer').val();
+					            $('#response').html('The value entered was ' + $('#question').val() + $('#answer').val());
+
+
+					            calEvent.question = ($('#question').val());
+					            calEvent.response = ($('#answer').val());
+					            
+					            //console.log('input: ' + $('#myInput').val());
+								//console.log('calEvent.question: ' + calEvent.question);
+					            
+					            //record.find('.name').html($('#myInput').val());
+					            $( this ).dialog( "close" );
+
+									    $.ajax({
+				                        url: 'fc/submit.php',
+				                        data: 'act=new&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&allDay=' + calEvent.allDay + '&question=' + calEvent.question + '&response=' + calEvent.response,
+				                        type: 'POST',
+
+				                        success: function(response){
+				                        calEvent.id = response
+				                        $('#calendar').fullCalendar('updateEvent', calEvent);
+				                    	},
+				                    	error: function(e){ console.log(e.responseText); }
+
+				                    	});
+					        },
+
+					        Cancel: function() {
+
+					        	// try deleting from calendar and database
+					        	$('#calendar').fullCalendar('removeEvents', function (event){
+                    				return event == calEvent;
+                				});
+
+
+					        	$.ajax({
+                    				url: 'fc/submit.php',
+                    				data: 'act=del&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&id=' + calEvent.id,
+                    				type: 'POST'
+                				});
+                				// end  of try
+
+					            $('#response').html('The Cancel button was clicked');
+					            $( this ).dialog( "close" );
+					            // need to not display event or write to database- this dialog may need to go somewhere else
+					            // or else it's ok- but when Cancelling, need to remove from the database and also the calendar
+					        }
+					    }
+					});
+
+					
+					$( "#dialogContent" ).dialog( "open" );
+
+					}
+					//end of if then
+                    
+
+                    $('#calendar').fullCalendar('updateEvent', calEvent);
+                },
+
+            // Called when an already existing event is dropped after drag
+            // tricky naming-- AllDay can refer either to the initial Event or the calendar slot, depending on context.
+            // this variable is to "remember" via callback where the event started
+            eventDragStart: function(calEvent, jsEvent, ui, view) {
+        			draggedEventStartedAsAllDay = calEvent.allDay;
+    		},
+
+        	eventDrop: function (calEvent, delta, revertFunc) {
+			    
+			    if (!calEvent.allDay && draggedEventStartedAsAllDay) {
+			        revertFunc();
+			    }
+
+			    else if (calEvent.allDay && !draggedEventStartedAsAllDay){
+			    	revertFunc();
+			    }
+			    
+			    else {$.ajax({
+			                url: 'fc/submit.php',
+			                    data: 'act=mod&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&id=' + calEvent.id + '&allDay=' + calEvent.allDay + '&question=' + calEvent.question + '&response=' + calEvent.response,
+			                    type: 'POST'
+			                });
+			    }
+			}
+
+
+
 		});
 	});
 
@@ -141,6 +340,13 @@
 		width: 900px;
 	}
 
+	// jquery ui dialogue
+	#dialogContent { display:none; }
+	#response { border: 1px solid green; margin-top:20px; padding:15px; }
+	#dialogContent p { margin-bottom: 1.5em; }
+	.record { margin-bottom:20px; padding:5px; border: 1px solid red; }
+
+
 </style>
 </head>
 <body>
@@ -155,6 +361,7 @@
 			<div class='fc-event'>Prayer Reminder</div>
 			<div class='fc-event'>Play Favorite Song</div>
 			<div class='fc-event'>Play Song Playlist</div>
+			<div class='fc-event-question'>Question and Response</div>
 			<p>
 				<input type='checkbox' id='recur-daily' />
 				<label for='recur-daily'>Recur Daily</label>
@@ -165,6 +372,30 @@
 		</div>
 		<div id='calendar'></div>
 		<div style='clear:both'></div>
+
+		<!-- Testing weird jquery ui dialog modal
+		http://stackoverflow.com/questions/24917243/recommendation-for-simple-jquery-dialog-example
+		 --><!-- 
+				<div id="dialog" title="Basic dialog">
+				    <p>This is an animated dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+				    <input class="myInput" type="text" />
+				    <button class="formSaver">Save me!</button>
+				</div>
+
+				<button id="opener">Open Dialog</button> -->
+
+		<!-- http://jsfiddle.net/ChrisStanyon/VzJe8/ -->
+
+			<div id="response">This is the response DIV</div>
+
+			<div id="dialogContent" title="This is a dialog box">
+			    <p>You can have whatever you need inside a dialog box and program the buttons to do whatever you like.</p>
+			    
+			    <form action="#" method="post" id="editForm">
+			        <input type="text" id="question" name="question" value="" />
+			        <input type="text" id="answer" name="answer" value="" />
+			    </form>
+			</div>
 	</div>
 </body>
 </html>

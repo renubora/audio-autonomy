@@ -34,12 +34,12 @@ if (isset($_GET['timezone'])) {
 // List of events
 $json = array();
 
-wLog("SELECT ID, title, start FROM events WHERE patientID=" . $caregiver['patientID'] . 
+wLog("SELECT ID, title, start, allDay, argList FROM events WHERE patientID=" . $caregiver['patientID'] . 
      " AND start BETWEEN '" . $range_start->format("Y-m-d H:i:s") . "' AND '" . $range_end->format("Y-m-d H:i:s") . 
      "' ORDER BY ID");
 
 // Query that retrieves events
-$request = "SELECT id, title, start FROM events WHERE patientID=" . $caregiver['patientID'] . 
+$request = "SELECT id, title, start, allDay, argList FROM events WHERE patientID=" . $caregiver['patientID'] . 
   " AND start BETWEEN '" . $range_start->format("Y-m-d H:i:s") . "' AND '" . $range_end->format("Y-m-d H:i:s") . 
   "' ORDER BY id";
 
