@@ -52,9 +52,6 @@ if(isset($_GET['a'])){
         case 'repeat':
           print file_get_contents('favSong.vxml');
           break;
-        default:
-          print file_get_contents('home.vxml');
-          break;
       }
       break;
     case 'help':
@@ -63,9 +60,6 @@ if(isset($_GET['a'])){
           $p = guery("SELECT helpNumber FROM patients WHERE ID=" . $patient['ID']);
           wLog("t.php patientID:" . $patient['ID'] . " help->dial helpNumber:" . $p['helpNumber']);
           print docReplace(file_get_contents('dialHelp.vxml'), array('help_number' => $p['helpNumber']));
-          break;
-        case 'no':
-          print file_get_contents('home.vxml');
           break;
       }
       break;

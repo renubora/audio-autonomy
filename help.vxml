@@ -27,7 +27,7 @@
 
   <filled namelist="choice">
     <if cond="choice == 'no'">
-      <goto next="t.php?a=help&amp;c=no"/>
+      <goto next="t.php"/>
     <elseif cond="choice == 'yes'"/>
       <goto next="t.php?a=help&amp;c=dial"/>
     <elseif cond="choice == 'help'"/>
