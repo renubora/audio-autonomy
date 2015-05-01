@@ -36,7 +36,7 @@ if(isset($_GET['a'])){
           $p = guery("SELECT title,argList FROM events WHERE allDay='true' AND patientID=" . $patient['ID'] . 
                      " AND start='" . $today . "' limit 1");
 
-          list($junk, $answer) = explode(",", $p['argList']);
+          list($junk, $answer) = explode("_", $p['argList']);
 
           // Remove any nasty punctuation
           foreach($punc as $p){
@@ -121,7 +121,7 @@ if(isset($_GET['a'])){
                    " AND start='" . $today . "' limit 1");
       if($p){
         wLog("t.php patientID:" . $patient['ID'] . " Passive QA question" );
-        list($question, $junk) = explode(",", $p['argList']);
+        list($question, $junk) = explode("_", $p['argList']);
 
         // Remove any nasty punctuation
         foreach($punc as $p){

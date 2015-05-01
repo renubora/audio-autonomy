@@ -15,6 +15,7 @@
 	       DERP
 	       [
 	       ( ?what ?is ?the password ) { <choice password> }
+	       ( no ) { <choice password> }
 	       [ +zero +one +two +three +four +five +six +seven +eight +nine ] { <choice number> }
 	       ]
       ]]>
@@ -29,7 +30,7 @@
       <goto next="t.php"/>
     <elseif cond="choice == 'number'"/>
       <prompt>
-	You are a victim of fraud.
+	You are a victim. of fraud.
         <audio bargein="false" src="sounds/annoyTone.wav"/>
       </prompt>
       <goto next="t.php"/>

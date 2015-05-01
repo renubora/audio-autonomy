@@ -157,11 +157,13 @@
 					*/
 
 					// beginning of if then (allDay events need to have input dialogue)
+
+					// scheduled/timeslotted events
 					if (calEvent.allDay == false) {
 
 					$.ajax({
     	                        url: 'fc/submit.php',
-                                data: 'act=new&title=' + calEvent.title + '&start=' + calEvent.start.format(),
+                                data: 'act=new&title=' + calEvent.title + '&allDay=' + calEvent.allDay + '&start=' + calEvent.start.format(),
                                 type: 'POST',
 
   	                        success: function(response){
@@ -175,6 +177,7 @@
 
 					else {
 
+					// all-day events
 					$( "#dialogContent" ).dialog({
 					    autoOpen: false,
 					    modal: true,

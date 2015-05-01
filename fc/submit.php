@@ -17,7 +17,14 @@ $id = isset($_POST['id']) ? $_POST['id'] : 0;
 $allDay = $_POST['allDay'];
 $question = trim($_POST['question']);
 $response = trim($_POST['response']);
+
+$argList = "";
+
+if($allDay == 'true') {
 $argList = $question . '_' . $response;
+}
+
+
 
 wLog("fc_submit.php act:" . $act . " title:" . $title . " start:" . $start .  " eventID:" . $id . 
      " patientID:" . $caregiver['patientID']);
