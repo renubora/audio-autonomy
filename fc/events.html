@@ -204,16 +204,49 @@
 
 					            calEvent.question = $('#question').val();
 					            calEvent.response = $('#answer').val();
-					            $('#response').html('The value entered was ' + $('#question').val() + $('#answer').val());
 
+					            $('#response').html('The values entered were ' + $('#question').val() + ' and ' + $('#answer').val());
 
-					            calEvent.question = ($('#question').val());
-					            calEvent.response = ($('#answer').val());
+					            var trimq = calEvent.question.trim();
+					            var trimr = calEvent.response.trim();
+
+					            //calEvent.question = ($('#question').val());
+					            //calEvent.response = ($('#answer').val());
 					            
 					            //console.log('input: ' + $('#myInput').val());
-								//console.log('calEvent.question: ' + calEvent.question);
-					            
+								console.log('calEvent.question: ' + trimq);
+								console.log('calEvent.response: ' + trimr);
+
 					            //record.find('.name').html($('#myInput').val());
+
+					        	//if Q or A are blank, try deleting from calendar and database
+
+
+					            if (trimq == '' || trimr == '' ) {
+
+					            	$( this ).dialog( "close" );
+					        	
+						        	$('#calendar').fullCalendar('removeEvents', function (event){
+	                    				return event == calEvent;
+	                				});
+
+
+						        	$.ajax({
+	                    				url: 'fc/submit.php',
+	                    				data: 'act=del&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&id=' + calEvent.id,
+	                    				type: 'POST'
+	                				});
+	                				// end  of try
+
+						            $('#response').html('A Question or Response was missing');
+						            $( this ).dialog( "close" );
+					            
+								}
+
+
+				                // if Q or A are not blank, write to database
+				                else {
+
 					            $( this ).dialog( "close" );
 
 									    $.ajax({
@@ -228,6 +261,8 @@
 				                    	error: function(e){ console.log(e.responseText); }
 
 				                    	});
+					        	}	
+
 					        },
 
 					        Cancel: function() {
