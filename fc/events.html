@@ -84,22 +84,66 @@
 			droppable: true, // this allows things to be dropped onto the calendar
 
 
-			/* Try to delay the modal window
-			
+			/* Try to delay the modal window			
         	setTimeout(function() {
       			console.log("sorry");// Do something after 5 seconds
 				}, 5000);*/
 
 			// Called when an event is clicked
-			eventClick: function(calEvent, jsEvent, view) {
+			// WORKS
+			/*eventClick: function(calEvent, jsEvent, view) {
 
 			        alert('Event: ' + calEvent.title);
-			        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
 			        alert('View: ' + view.name);
 
 			        // change the border color just for fun
 			        $(this).css('border-color', 'red');	  
+			},*/
+
+			// try dialogue instead of alert
+			eventClick: function(calEvent, jsEvent, view) {
+
+			    $( "#eventInfo" ).dialog({
+			    	autoOpen: false,
+					modal: true,
+					buttons: {
+
+							OK: function() {
+							$( this ).dialog( "close" );
+							},
+
+
+						"Delete Activity": function() {
+
+						        	// try deleting from calendar and database
+						        	$('#calendar').fullCalendar('removeEvents', function (event){
+	                    				return event == calEvent;
+	                				});
+
+
+						        	$.ajax({
+	                    				url: 'fc/submit.php',
+	                    				data: 'act=del&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&id=' + calEvent.id,
+	                    				type: 'POST'
+	                				});
+	                				// end  of try
+
+						            $('#response').html('The Cancel button was clicked');
+						            $( this ).dialog( "close" );
+						            // need to not display event or write to database- this dialog may need to go somewhere else
+						            // or else it's ok- but when Cancelling, need to remove from the database and also the calendar
+						        
+						}
+					}
+
+			    });
+
+
+			    $( "#eventInfo" ).dialog( "open" );
+				$('#calendar').fullCalendar('updateEvent', calEvent);
+	  
 			},
+			
 
             // Andrew Delete event code
             // Called when an event is clicked
@@ -382,6 +426,7 @@
 
 	// jquery ui dialogue
 	#dialogContent { display:none; }
+	#eventInfo { display:none; }
 	#response { border: 1px solid green; margin-top:20px; padding:15px; }
 	#dialogContent p { margin-bottom: 1.5em; }
 	.record { margin-bottom:20px; padding:5px; border: 1px solid red; }
@@ -433,14 +478,23 @@
 
 			<div id="response">This is the response DIV</div>
 
-			<div id="dialogContent" title="This is a dialog box">
-			    <p>You can have whatever you need inside a dialog box and program the buttons to do whatever you like.</p>
+			<div id="eventInfo" title="Activity Information">
+
+			    <p>Event information goes here</p>    
+			    
+			</div>
+
+
+			<div id="dialogContent" title="Question and Response">
+			    <p>Enter your question and response</p>
 			    
 			    <form action="#" method="post" id="editForm">
 			        <input type="text" id="question" name="question" value="" />
 			        <input type="text" id="answer" name="answer" value="" />
 			    </form>
 			</div>
+
+
 	</div>
 </body>
 </html>
