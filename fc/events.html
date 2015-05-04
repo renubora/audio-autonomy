@@ -355,7 +355,9 @@
 
 
 
-    		eventDragStop: function(event,jsEvent) {
+
+    		// Try Trash Code -doesn't quite work
+    		eventDragStop: function(calEvent,jsEvent) {
 
     		var trashEl = jQuery('#calendarTrash');
     		var ofs = trashEl.offset();
@@ -367,10 +369,25 @@
 
     		if (jsEvent.pageX >= x1 && jsEvent.pageX<= x2 &&
         		jsEvent.pageY>= y1 && jsEvent.pageY <= y2) {
-        			alert('SIII');
-        			$('#calendario').fullCalendar('removeEvents', event.id);
-    				}
+
+
+        			
+        			$('#calendar').fullCalendar('removeEvents', calEvent.id);
+    				
+					
+		        	
+		        	$.ajax({
+        				url: 'fc/submit.php',
+        				data: 'act=del&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&id=' + calEvent.id,
+        				type: 'POST'
+    				});
+
+    				alert('You trashed your event!');
+                				
+                	}// end  of try
 			},
+			// end of Trash code
+
 
         	eventDrop: function (calEvent, delta, revertFunc) {
 
@@ -499,6 +516,15 @@
 			</p> -->
 		</div>
 
+<!-- 
+		FC Version 2 trash:
+		http://stackoverflow.com/questions/25726709/delete-event-by-dragging-it-outside-of-the-full-calendar-v-2-with-or-without-tr
+		
+		FC version 1 trash:
+		http://stackoverflow.com/questions/3470154/remove-elements-from-fullcalendar-by-dragging-to-trash-can
+
+		http://exchange.opcartstore.com/questions/view/52289/remove-elements-from-fullcalendar-by-dragging-to-trash-can
+ -->
 		<div id="calendarTrash" class="calendar-trash">&nbsp;<br/>&nbsp;
 		<br/><img src="fc/trash_can.jpg"></img></div>
 
