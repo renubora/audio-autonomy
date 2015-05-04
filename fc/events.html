@@ -36,6 +36,7 @@
 				zIndex: 999,
 				revert: true,      // will cause the event to go back to its
 				revertDuration: 0  //  original position after the drag
+				
 			});
 		});
 
@@ -55,6 +56,7 @@
 				zIndex: 999,
 				revert: true,      // will cause the event to go back to its
 				revertDuration: 0  //  original position after the drag
+				
 			});
 		});
 
@@ -98,10 +100,6 @@
 			},*/
 
 
-			//TRY TRASH CAN
-
-
-
 			// Show event info when clicking on event (will allow deleting an event as well)
 			eventClick: function(calEvent, jsEvent, view) {
 
@@ -142,6 +140,7 @@
 
 
 			    $( "#eventInfo" ).dialog( "open" );
+			    
 				$('#calendar').fullCalendar('updateEvent', calEvent);
 	  
 			},
@@ -201,7 +200,7 @@
 					    }); 
 					*/
 
-
+					///////////////////////////////////////////////////////////////////
 					// beginning of if then (allDay events need to have input dialogue)
 
 					// scheduled/timeslotted events
@@ -353,12 +352,10 @@
         			draggedEventStartedAsAllDay = calEvent.allDay;
     		},
 
-
-
-
     		// Try Trash Code -doesn't quite work
     		eventDragStop: function(calEvent,jsEvent) {
 
+    		
     		var trashEl = jQuery('#calendarTrash');
     		var ofs = trashEl.offset();
 
@@ -369,13 +366,10 @@
 
     		if (jsEvent.pageX >= x1 && jsEvent.pageX<= x2 &&
         		jsEvent.pageY>= y1 && jsEvent.pageY <= y2) {
-
-
-        			
+      				
+      				// why does leading _id instead of id sometimes make it work better?
         			$('#calendar').fullCalendar('removeEvents', calEvent.id);
-    				
-					
-		        	
+ 	        	
 		        	$.ajax({
         				url: 'fc/submit.php',
         				data: 'act=del&title=' + calEvent.title + '&start=' + calEvent.start.format() + '&id=' + calEvent.id,
@@ -384,14 +378,14 @@
 
     				alert('You trashed your event!');
                 				
-                	}// end  of try
+                }// end  of try
 			},
 			// end of Trash code
 
 
         	eventDrop: function (calEvent, delta, revertFunc) {
-
-			    
+				
+				// only drop the event if the drop point matches the event type; if not, revert it		    
 			    if (!calEvent.allDay && draggedEventStartedAsAllDay) {
 			        revertFunc();
 			    }
