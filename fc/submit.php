@@ -19,11 +19,12 @@ $question = trim($_POST['question']);
 $response = trim($_POST['response']);
 
 $argList = "";
+$className = "fc-event";
 
 if($allDay == 'true') {
 $argList = $question . '_' . $response;
+$className = 'fc-event-question';
 }
-
 
 
 wLog("fc_submit.php act:" . $act . " title:" . $title . " start:" . $start .  " eventID:" . $id . 
@@ -32,7 +33,7 @@ wLog("fc_submit.php act:" . $act . " title:" . $title . " start:" . $start .  " 
 switch($act){
   case 'new':
     $db = new PDO('mysql:host=localhost;dbname=groundhog', 'root', 'abc123');
-    $db->exec("Insert into events(title, allDay, argList, start, patientID) values('" . $title . "','" . $allDay . "','" 
+    $db->exec("Insert into events(title, className, allDay, argList, start, patientID) values('" . $title . "','" . $className . "','". $allDay . "','" 
         . $argList . "','" . $start . "'," . $caregiver['patientID'] . ")");
     /*$db->exec("Insert into events(title, start, patientID, allDay) values('". $title . "','" . $start . "','" . 
               $caregiver['patientID'] . "','" . 'yay' . "','" . ")" );*/

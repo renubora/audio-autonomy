@@ -67,28 +67,25 @@
 		// end of eventDrop experiment
 
 
+
 		$('#calendar').fullCalendar({
+			
 			header:{
 				left: 'prev,next today',
 				center: 'title',
 				right: 'agendaDay,agendaWeek'
 			},
-	                events: 'fc/events.php',
+            
+            events: 'fc/events.php',
 			editable: true,
-                       	defaultTimedEventDuration: '00:30:00',
-	                allDayDefault: false,
-	                eventDurationEditable: false,
-                        forceEventDuration: true,
-                	defaultView: 'agendaWeek',
-                	allDaySlot: true,
+            defaultTimedEventDuration: '00:30:00',
+            allDayDefault: false,
+            eventDurationEditable: false,
+            forceEventDuration: true,
+        	defaultView: 'agendaWeek',
+        	allDaySlot: true,
 			droppable: true, // this allows things to be dropped onto the calendar
-
-
-			/* Try to delay the modal window			
-        	setTimeout(function() {
-      			console.log("sorry");// Do something after 5 seconds
-				}, 5000);*/
-
+			
 			// Called when an event is clicked
 			// WORKS
 			/*eventClick: function(calEvent, jsEvent, view) {
@@ -100,7 +97,12 @@
 			        $(this).css('border-color', 'red');	  
 			},*/
 
-			// try dialogue instead of alert
+
+			//TRY TRASH CAN
+
+
+
+			// Show event info when clicking on event (will allow deleting an event as well)
 			eventClick: function(calEvent, jsEvent, view) {
 
 			    $( "#eventInfo" ).dialog({
@@ -158,10 +160,9 @@
                 });
 
          	},*/
-
-         	// 
+ 
          	// standard code (no Question Response form)
-         	eventReceive: function(calEvent){
+         	/*eventReceive: function(calEvent){
                             $.ajax({
     	                        url: 'fc/submit.php',
                                 data: 'act=new&title=' + calEvent.title + '&start=' + calEvent.start.format(),
@@ -175,7 +176,7 @@
 
     	                    });
                             $('#calendar').fullCalendar('updateEvent', calEvent);
-                        },
+                        },*/
 
 
 
@@ -200,10 +201,13 @@
 					    }); 
 					*/
 
+
 					// beginning of if then (allDay events need to have input dialogue)
 
 					// scheduled/timeslotted events
 					if (calEvent.allDay == false) {
+					
+					//calEvent.className = 'fc-event';
 
 					$.ajax({
     	                        url: 'fc/submit.php',
@@ -211,7 +215,7 @@
                                 type: 'POST',
 
   	                        success: function(response){
-	                            calEvent.id = response
+	                            calEvent.id = response;
 	                            $('#calendar').fullCalendar('updateEvent', calEvent);
 	                        },
 	                        error: function(e){ console.log(e.responseText); }
@@ -220,7 +224,7 @@
 					}
 
 					else {
-
+					calEvent.className = 'fc-event-question';
 					// all-day events
 					$( "#dialogContent" ).dialog({
 					    autoOpen: false,
@@ -264,8 +268,6 @@
 					            //record.find('.name').html($('#myInput').val());
 
 					        	//if Q or A are blank, try deleting from calendar and database
-
-
 					            if (trimq == '' || trimr == '' ) {
 
 					            	$( this ).dialog( "close" );
@@ -338,7 +340,9 @@
 					}
 					//end of if then
                     
-
+					
+					
+                    
                     $('#calendar').fullCalendar('updateEvent', calEvent);
                 },
 
@@ -349,7 +353,27 @@
         			draggedEventStartedAsAllDay = calEvent.allDay;
     		},
 
+
+
+    		eventDragStop: function(event,jsEvent) {
+
+    		var trashEl = jQuery('#calendarTrash');
+    		var ofs = trashEl.offset();
+
+    		var x1 = ofs.left;
+    		var x2 = ofs.left + trashEl.outerWidth(true);
+    		var y1 = ofs.top;
+    		var y2 = ofs.top + trashEl.outerHeight(true);
+
+    		if (jsEvent.pageX >= x1 && jsEvent.pageX<= x2 &&
+        		jsEvent.pageY>= y1 && jsEvent.pageY <= y2) {
+        			alert('SIII');
+        			$('#calendario').fullCalendar('removeEvents', event.id);
+    				}
+			},
+
         	eventDrop: function (calEvent, delta, revertFunc) {
+
 			    
 			    if (!calEvent.allDay && draggedEventStartedAsAllDay) {
 			        revertFunc();
@@ -386,7 +410,18 @@
 		width: 1300px;
 		margin: 0 auto;
 	}
-		
+	
+	#leftCol {
+		float: left;
+		width: 150px;
+	}
+
+	#trash {
+		float: left;
+		width: 150px;
+		text-align: left;
+	}
+
 	#external-events {
 		float: left;
 		width: 150px;
@@ -419,15 +454,18 @@
 	}
 
 	#calendar {
-		float: right;
+		float: left;
+		margin: 0 50px;
 		width: 1100px;
 		
 	}
 
+	
+
 	// jquery ui dialogue
 	#dialogContent { display:none; }
 	#eventInfo { display:none; }
-	#response { border: 1px solid green; margin-top:20px; padding:15px; }
+	#response { border: 1px solid red; margin-top:20px; padding:15px; }
 	#dialogContent p { margin-bottom: 1.5em; }
 	.record { margin-bottom:20px; padding:5px; border: 1px solid red; }
 
@@ -436,6 +474,8 @@
 </head>
 <body>
 	<div id='wrap'>
+		<div id='leftCol'>
+
 		<div id='external-events'>
 			<h4>Audio Activities</h4>
 			<h5>All-Day Responders</h5>
@@ -458,6 +498,15 @@
 				<label for='recur-weekly'>Recur Weekly</label>
 			</p> -->
 		</div>
+
+		<div id="calendarTrash" class="calendar-trash">&nbsp;<br/>&nbsp;
+		<br/><img src="fc/trash_can.jpg"></img></div>
+
+		
+
+		</div>
+
+	</div>
 
 
 		<div id='calendar'></div>
