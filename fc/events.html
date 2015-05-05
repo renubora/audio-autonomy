@@ -86,26 +86,17 @@
             forceEventDuration: true,
         	defaultView: 'agendaWeek',
         	allDaySlot: true,
-			droppable: true, // this allows things to be dropped onto the calendar
-			
-			// Called when an event is clicked
-			// WORKS
-			/*eventClick: function(calEvent, jsEvent, view) {
+			droppable: true, // this allows things to be dropped onto the calendar		
 
-			        alert('Event: ' + calEvent.title);
-			        alert('View: ' + view.name);
-
-			        // change the border color just for fun
-			        $(this).css('border-color', 'red');	  
-			},*/
-
-
-			// Show event info when clicking on event (will allow deleting an event as well)
+			// Show event info when clicking on event (contains button to delete event as well)
 			eventClick: function(calEvent, jsEvent, view) {
 
 			    $( "#eventInfo" ).dialog({
 			    	autoOpen: false,
+			    	// data:  ,
 					modal: true,
+					width: 300,
+					height: 500,
 					buttons: {
 
 							OK: function() {
@@ -113,7 +104,7 @@
 							},
 
 
-						"Delete Activity": function() {
+							"Delete Activity": function() {
 
 						        	// try deleting from calendar and database
 						        	$('#calendar').fullCalendar('removeEvents', function (event){
@@ -133,14 +124,28 @@
 						            // need to not display event or write to database- this dialog may need to go somewhere else
 						            // or else it's ok- but when Cancelling, need to remove from the database and also the calendar
 						        
-						}
+							}
 					}
-
 			    });
 
+				var startTime = calEvent.start.format();
+				var endTime = calEvent.end.format();
+				// need to make sure calEvent.question and .reponse are defined for the event by input or when pulling from database
+				// right now, the events displayed either
+				// a) have only question and response, if they were just inputted
+				// b) have only .argList, if they were pulled from the database
+				// it seems better to always have a question and response defined, so those need to be parsed into the event when pulling from the
+				// database
+				 
 
-			    $( "#eventInfo" ).dialog( "open" );
-			    
+
+				var dialogContent = '<p>' + startTime + '</p>' + '<p>' + endTime + '</p>' + '<p>' + calEvent.argList + '</p>' + '<p>' + calEvent.question + '</p>' + '<p>' + calEvent.response + '</p>';
+
+				$('#eventInfo').dialog('option', 'title', calEvent.title);
+
+			    $('#eventInfo').dialog( 'open' ).html(dialogContent);
+
+
 				$('#calendar').fullCalendar('updateEvent', calEvent);
 	  
 			},
