@@ -66,10 +66,7 @@
 		// eventDrop: should only write to database and move event if draggedEvent is allowed in the slot type
 		// initialize this so it's never empty- it is needed to track an event's starting point
 		var draggedEventStartedAsAllDay = false;
-		// end of eventDrop experiment
-
-
-
+		
 		$('#calendar').fullCalendar({
 			
 			header:{
@@ -96,7 +93,7 @@
 			    	// data:  ,
 					modal: true,
 					width: 300,
-					height: 500,
+					height: 350,
 					buttons: {
 
 							OK: function() {
@@ -140,7 +137,7 @@
 				//console.log(q_and_a_array);
 				console.log(calEvent.allDay);
 
-				
+
 				// display for Q and A
 				if (calEvent.allDay) {
 					var q_and_a_array = calEvent.argList.split("_");
@@ -199,8 +196,6 @@
     	                    });
                             $('#calendar').fullCalendar('updateEvent', calEvent);
                         },*/
-
-
 
             // Called when adding a new event from the left hand menu (Question and Response collected)
             eventReceive: function(calEvent){
@@ -281,9 +276,6 @@
 					            var trimr = calEvent.response.trim();
 
 					            calEvent.argList = trimq + "_" + trimr;
-
-					            //calEvent.question = ($('#question').val());
-					            //calEvent.response = ($('#answer').val());
 					            
 					            //console.log('input: ' + $('#myInput').val());
 								console.log('calEvent.question: ' + trimq);
@@ -363,10 +355,7 @@
 
 					}
 					//end of if then
-                    
-					
-					
-                    
+                                      
                     $('#calendar').fullCalendar('updateEvent', calEvent);
                 },
 
@@ -401,9 +390,8 @@
         				type: 'POST'
     				});
 
-    				alert('You trashed your event!');
-                				
-                }// end  of try
+    				alert('You trashed your event!');               				
+                }
 			},
 			// end of Trash code
 
@@ -557,36 +545,25 @@
 		<div id='calendar'></div>
 		<div style='clear:both'></div>
 
-		<!-- Testing weird jquery ui dialog modal
-		http://stackoverflow.com/questions/24917243/recommendation-for-simple-jquery-dialog-example
-		 --><!-- 
-				<div id="dialog" title="Basic dialog">
-				    <p>This is an animated dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
-				    <input class="myInput" type="text" />
-				    <button class="formSaver">Save me!</button>
-				</div>
-
-				<button id="opener">Open Dialog</button> -->
-
-		<!-- http://jsfiddle.net/ChrisStanyon/VzJe8/ -->
-
-
-
 <!-- DEBUGGERY
 			<div id="response">This is the response DIV</div>
  -->
 
 
-			<div id="eventInfo" title="Activity Information">
+<!-- 
+// possible snippet to display nice meaningful question title instead of just "Question and Answer"
+if (calEvent.allDay) {
+	var q_and_a_array = calEvent.argList.split("_");
+	calEvent.title = q_and_a_array[0];
+} -->
 
-			    <p>Event information goes here - will be overidden dynamically</p>    
-			    
+
+			<div id="eventInfo" title="Activity Information">
+			    <p>Event information goes here - will be overidden dynamically</p>    			    
 			</div>
 
-
 			<div id="dialogContent" title="Question and Response">
-			    <p>Enter your question and response</p>
-			    
+			    <p>Enter your question and response</p>			    
 			    <form action="#" method="post" id="editForm">
 			        <input type="text" id="question" name="question" value="" />
 			        <input type="text" id="answer" name="answer" value="" />
