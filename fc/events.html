@@ -104,7 +104,7 @@
 							},
 
 
-							"Delete Activity": function() {
+							"Delete": function() {
 
 						        	// try deleting from calendar and database
 						        	$('#calendar').fullCalendar('removeEvents', function (event){
@@ -136,10 +136,28 @@
 				// b) have only .argList, if they were pulled from the database
 				// it seems better to always have a question and response defined, so those need to be parsed into the event when pulling from the
 				// database
-				 
+				var qa = calEvent.allDay;
+				//console.log(q_and_a_array);
+				console.log(calEvent.allDay);
 
+				
+				// display for Q and A
+				if (calEvent.allDay) {
+					var q_and_a_array = calEvent.argList.split("_");
+					console.log(q_and_a_array);
 
-				var dialogContent = '<p>' + startTime + '</p>' + '<p>' + endTime + '</p>' + '<p>' + calEvent.argList + '</p>' + '<p>' + calEvent.question + '</p>' + '<p>' + calEvent.response + '</p>';
+					var q_display = 'Question: ' + q_and_a_array[0];
+					var a_display = 'Answer: ' + q_and_a_array[1];
+
+					var dialogContent = '<p>Day: ' + startTime + '</p>' + '<p>' + q_display + '</p>' + '<p>' + a_display + '</p>';
+				}
+
+				else {
+					var dialogContent = '<p>Start: ' + startTime + '</p>' + '<p>End: ' + endTime + '</p>';
+
+				}
+
+				//var dialogContent = '<p>' + startTime + '</p>' + '<p>' + endTime + '</p>' + '<p>' + calEvent.argList + '</p>' + '<p>' + calEvent.question + '</p>' + '<p>' + calEvent.response + '</p>';
 
 				$('#eventInfo').dialog('option', 'title', calEvent.title);
 
@@ -261,6 +279,8 @@
 
 					            var trimq = calEvent.question.trim();
 					            var trimr = calEvent.response.trim();
+
+					            calEvent.argList = trimq + "_" + trimr;
 
 					            //calEvent.question = ($('#question').val());
 					            //calEvent.response = ($('#answer').val());
@@ -480,7 +500,7 @@
 
 	/*// jquery ui dialogue*/
 	#dialogContent { display:none; }
-	#eventInfo { display:none; }
+	#eventInfo { text-align:left; display:none; }
 	#response { border: 1px solid gray; margin-top:20px; padding:15px; }
 	/*// #dialogContent p { margin-bottom: 1.5em; }*/
 	.record { margin-bottom:20px; padding:5px; border: 1px solid red; }
