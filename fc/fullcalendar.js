@@ -2563,6 +2563,9 @@ var MouseFollower = Class.extend({
 
 			$(document).off('mousemove', this.mousemoveProxy);
 
+			// Renu hack to remove revert on trash- try a different way
+			// if (hi = false) {shouldRevert = false;}
+
 			if (shouldRevert && revertDuration && !this.isHidden) { // do a revert animation?
 				this.isAnimating = true;
 				this.el.animate({
