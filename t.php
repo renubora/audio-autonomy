@@ -29,8 +29,6 @@ if(isset($_GET['a'])){
           break;
 
         case 'pqa': // Our passive Q&A
-          wLog("t.php patientID:" . $patient['ID'] . " Passive QA answer" );
-
           // Get our allDay event
           $today = date("Y-m-d") . " 00:00:00";
           $p = guery("SELECT title,argList FROM events WHERE allDay='true' AND patientID=" . $patient['ID'] . 
@@ -40,8 +38,10 @@ if(isset($_GET['a'])){
 
           // Remove any nasty punctuation
           foreach($punc as $p){
-            $answer = str_replace($p, " ", $answer);
+            $answer = str_replace($p, "", $answer);
           }
+          $answer = trim($answer);
+          wLog("t.php patientID:" . $patient['ID'] . " Passive QA answer:" . $answer);
 
           print docReplace(file_get_contents('passiveAnswer.vxml'), array('passive_answer' => $answer));
           break;
@@ -114,13 +114,14 @@ if(isset($_GET['a'])){
       $p = guery("SELECT title,argList FROM events WHERE allDay='true' AND patientID=" . $patient['ID'] . 
                    " AND start='" . $today . "' limit 1");
       if($p){
-        wLog("t.php patientID:" . $patient['ID'] . " Passive QA question" );
         list($question, $junk) = explode("_", $p['argList']);
 
         // Remove any nasty punctuation
         foreach($punc as $p){
-          $question = str_replace($p, " ", $question);
+          $question = str_replace($p, "", $question);
         }
+        $question = trim($question);
+        wLog("t.php patientID:" . $patient['ID'] . " Passive QA question:" . $question);
 
         // Build the VXML Q&A
         $defaultArgs['passive_question_ASR'] = "<item>" . $question . "</item>";

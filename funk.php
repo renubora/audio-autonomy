@@ -7,7 +7,7 @@ $timeSlice = 30; // Time in seconds between each HTTP GET from the VoiceXML brow
 $timeSliceDiff = 5; // Our before and after tolerance in seconds
 
 // Array of punctuation we want to remove from ASR or TTS
-$punc = array('!', '?', '.', ',');
+$punc = array(".", "!", "?", ",", "&", "\"", "'");
 
 // Connect to mySQL database
 function db_connect(){

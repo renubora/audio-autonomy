@@ -14,10 +14,8 @@
       <![CDATA[
 	       DERP
 	       [
-	       ( ?what ?is ?the password ) { <choice password> }
 	       ( no ) { <choice password> }
 	       [ one seven four two ] { <choice number> }
-	       [ +zero +one +two +three +four +five +six +seven +eight +nine ] { <choice number> }
 	       ]
       ]]>
     </grammar>
