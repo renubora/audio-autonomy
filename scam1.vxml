@@ -2,7 +2,7 @@
 <vxml version = "2.1" xmlns="http://www.w3.org/2001/vxml">
 <form id="scam">
   <field name="choice">
-    <prompt bargein="true" bargeintype="hotword" timeout="120s">
+    <prompt timeout="120s">
       This is Jim from Burial Life Insurance and I’m calling you back from the Senior Care Program. 
       You spoke with one of my Call Center representatives recently regarding some information on 
       your California State Regulated Burial Life Insurance Plans you may qualify for?
@@ -15,7 +15,9 @@
 	       DERP
 	       [
 	       ( no ) { <choice password> }
-	       [ one seven four two ] { <choice number> }
+	       ( yes ) { <choice number> }
+	       ( one four seven two ) { <choice number> }
+	       ( 1 4 7 2 ) { <choice number> }
 	       ]
       ]]>
     </grammar>
