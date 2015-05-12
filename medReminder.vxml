@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1">
+<form>
+  <block>
+    <prompt>
+      It is now %%time%% . .
+      <audio bargein="false" src="sounds/renuAspirin.mp3"/>
+    </prompt>
+    <goto next="t.php"/>
+  </block>
+</form>
+</vxml>

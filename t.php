@@ -28,8 +28,7 @@ if(isset($_GET['a'])){
           print file_get_contents('scam1.vxml');
           break;
         case 'med':
-          print docReplace(file_get_contents('passiveAnswer.vxml'),
-                           array('passive_answer' => 'It is now 2pm. This is uncle Ray New reminding you to take your Zan axe.'));
+          print docReplace(file_get_contents('medReminder.vxml'), array('time' => date('g:ia')));
           break;
         case 'pqa': // Our passive Q&A
           // Get our allDay event

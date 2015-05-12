@@ -34,7 +34,8 @@
       <goto next="t.php"/>
     <elseif cond="choice == 'number'"/>
       <prompt>
-	Sorry. You have failed the fraud test.
+        Sorry. You have failed the fraud test. This was only a test.
+	<audio bargein="false" src="sounds/scam1Renu.mp3"/>
       </prompt>
       <goto next="t.php"/>
     </if>
