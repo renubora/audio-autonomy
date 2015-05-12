@@ -30,6 +30,9 @@
 
   <filled namelist="login">
     <if cond="login == '%%pin%%'">
+      <prompt bargein="false" timeout="60s">
+        Login successful.
+      </prompt>
       <goto next="t.php"/>
     <else/>
       <prompt>

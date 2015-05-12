@@ -13,6 +13,7 @@
 	  <item>help help</item>
 	  <item>favorite song</item>
 	  <item>fraud test</item>
+	  <item>medication reminder</item>
 	  %%passive_question_ASR%%
 	</one-of>
       </rule>
@@ -34,6 +35,8 @@
       <goto next="t.php?a=home&amp;c=favSong"/>
     <elseif cond="choice == 'fraud test'"/>
       <goto next="t.php?a=home&amp;c=scam"/>
+    <elseif cond="choice == 'medication reminder'"/>
+      <goto next="t.php?a=home&amp;c=med"/>
     %%passive_question_if%%
     </if>
   </filled>

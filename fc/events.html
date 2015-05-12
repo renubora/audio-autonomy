@@ -427,19 +427,20 @@
 </script>
 <style>
 	body {
-		margin-top: 40px;
+		margin-top: 5px;
 		text-align: center;
 		font-size: 14px;
 		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;		
 	}
 		
 	#wrap {
-		width: 1160px;
+		width: 1220px;
 		margin: 0 auto;
 	}
 	
 	#leftCol {
 		float: left;
+		margin-left: 20px;
 		width: 150px;
 	}
 
@@ -449,10 +450,14 @@
 		text-align: left;
 	}
 
+	#logo {
+		margin-bottom: 20px;
+	}
+
 	#external-events {
 		float: left;
 		width: 150px;
-		padding: 0 10px;
+		padding: 0px 10px;
 		border: 1px solid #ccc;
 		background: #eee;
 		text-align: left;
@@ -483,7 +488,7 @@
 	#calendar {
 		float: left;
 		margin: 0 50px;
-		width: 940px;
+		width: 970px;
 		
 	}
 
@@ -494,10 +499,15 @@
 	/*// #dialogContent p { margin-bottom: 1.5em; }*/
 	.record { margin-bottom:20px; padding:5px; border: 1px solid red; }
 
+	/* override regular .fc-event */
+	.fc-event-question {
+	padding-left: 5px;
+}
+
 </style>
 </head>
 <body>
-	<div id='wrap'>
+		<div id='logo'> <img src="fc/Logo.png"></img></br ></div>
 		<div id='leftCol'>
 
 		<div id='external-events'>
