@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 
 // An event scheduled for 0 will fire between (-1 * $timeSlice)/2 - $timeSliceDiff AND $timeSlice/2 + $timeSliceDiff
-$timeSlice = 10; // Time in seconds between each HTTP GET from the VoiceXML browser
+$timeSlice = 15; // Time in seconds between each HTTP GET from the VoiceXML browser
 $timeSliceDiff = 5; // Our before and after tolerance in seconds
 
 // Array of punctuation we want to remove from ASR or TTS
