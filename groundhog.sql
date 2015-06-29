@@ -1,3 +1,22 @@
+
+/*
+Copyright (C) 2015,  Andrew McConachie and Renu Bora. All rights reserved.
+
+This file is part of this program.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License Version 2 (GPLv2) as published by
+the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License Version 2 in LICENSE.txt in the root folder.  If not, see http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ */
+
+
 -- MySQL dump 10.13  Distrib 5.5.41, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: groundhog
