@@ -14,5 +14,5 @@ You can run groundhog.sql to populate the groundhog database to start with.
 - 
 
 
-on fc/submit.php, line 53, database password 'abc123' should be updated:
- = new PDO('mysql:host=localhost;dbname=groundhog', 'root', 'abc123');
+
+on fc/submit.php, line 53, the database password 'abc123' should be updated
