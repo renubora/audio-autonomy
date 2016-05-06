@@ -18,6 +18,6 @@ NOTE: as a proof of concept, there is virtually no security implemented, so do n
 
 
 in funk.php (which has utility functions), line 34, the database password 'abc123' should be updated
-
 on fc/submit.php, line 53, the database password 'abc123' should be updated
+on fc/events.php, line 66, the database password 'abc123' should be updated
 
