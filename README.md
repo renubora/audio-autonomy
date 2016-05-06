@@ -13,7 +13,7 @@ NOTE: as a proof of concept, there is virtually no security implemented, so do n
 
 3) You can run groundhog.sql to populate the groundhog database initially.
 - the 'caregiver' table allows different people who login to each have their own calendar
-- the 'patients' table allows different patients to have their own VoiceXML programming
+- the 'patients' table allows different patients to have their own VoiceXML programming, to phone into the voxeo system and also recieve calls.
 - the 'events' table holds all the event data for questions and answeres
 
 
