@@ -6,7 +6,7 @@ Uses fullcalender.io, which has a great API and documentation. It a front-end in
 NOTE: as a proof of concept, there is virtually no security implemented, so do not use for any actual sensitive data. See "Security Issues" below.
 
 
-## Directions ##
+## Instructions ##
 1) You must have a web server with LAMP running. This code can be dropped into the web server directory. index.html is the initial login page, which uses the 'caregiver' table to identify the user/password.
 
 2) You can call the MySQL database 'groundhog' which is the name we used, or else change the name in our code.
@@ -16,12 +16,10 @@ NOTE: as a proof of concept, there is virtually no security implemented, so do n
 - the 'patients' table allows different patients to have their own VoiceXML programming, to phone into the voxeo system, have a pin#, to recieve calls, and to have a phone # for emergency help calls.
 - the 'events' table holds all the event data for questions and answeres
 
-
-in funk.php (which has utility functions), line 34, the database password 'abc123' should be updated
-
-on fc/submit.php, line 53, the database password 'abc123' should be updated
-
-on fc/events.php, line 66, the database password 'abc123' should be updated
+4) Database credentials
+- in funk.php (which has utility functions), line 34, the database password 'abc123' should be updated
+- in fc/submit.php, line 53, the database password 'abc123' should be updated
+- in fc/events.php, line 66, the database password 'abc123' should be updated
 
 Security Issues:
 
