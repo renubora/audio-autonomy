@@ -1,7 +1,7 @@
 # groundhog
 A VoiceXML application for seniors with early stage dementia.
 
-Uses fullcalender.io, which has a great API and documentation. It a front-end interface, so we connected it to our own back-end system. It also uses voxeo's free VoiceXML IVR platform service.
+Uses fullcalender.io, which has a great API and documentation. It a front-end interface, so we connected it to our own back-end system. It also uses Aspect.com's Prophecy free VoiceXML IVR platform service (original a Voxeo product, before Aspect purchased Voxeo).
 
 NOTE: as a proof of concept, there is virtually no security implemented, so do not use for any actual sensitive data. See "Security Issues" below.
 
